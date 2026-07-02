@@ -1,0 +1,53 @@
+{
+  // octopus-inspect configuration (JSONC — comments are allowed).
+  //
+  // Every field is optional. A malformed or absent config is not an error:
+  // the run proceeds with defaults, so you can always inspect. This file is a
+  // fully commented example — delete the parts you don't need.
+
+  // ── ignore ────────────────────────────────────────────────────────────────
+  // Extra ignore globs, ADDED to the built-in defaults (node_modules, .git,
+  // dist, build, coverage, lockfiles, *.min.js, *.map, .DS_Store, …). These
+  // never replace the defaults. Supports "*" (within a path segment) and "**".
+  "ignore": [
+    "fixtures/**",
+    "**/*.generated.json",
+    "examples/**"
+  ],
+
+  // ── rules ───────────────────────────────────────────────────────────────
+  // Per-rule overrides, keyed by rule id. A value of "off" disables the rule
+  // (it is not run at all); a severity ("error" | "warning" | "info") re-grades
+  // it. Any rule not listed here keeps its built-in default severity. The
+  // effective severity is what --threshold and the exit code compare against.
+  "rules": {
+    // Built-in rules and their defaults, for reference:
+    //   secret-in-source            error    (hardcoded credentials)
+    //   prompt-injection-sink       warning  (untrusted input in a prompt)
+    //   unsafe-autonomy             error    (auto-execute with no gate)
+    //   overbroad-permission        warning  (wildcard permission/tool grant)
+    //   missing-evidence            warning  (decision with no evidence)
+    //   circular-workflow           error    (dependency cycle in a workflow)
+    //   unpinned-agent-dependency   info     (mutable-tag dependency)
+
+    "prompt-injection-sink": "error",     // treat prompt sinks as blocking here
+    "missing-evidence": "info",           // downgrade to advisory
+    "unpinned-agent-dependency": "off"    // not enforced in this repo
+  },
+
+  // ── plugins ─────────────────────────────────────────────────────────────
+  // Module specifiers to load as rule plugins. Relative/absolute paths resolve
+  // against this workspace root; bare specifiers resolve as node modules. Each
+  // module must export a { name, rules } plugin (default export, a named
+  // `plugin`, or the module shape itself). Duplicate rule ids are rejected, and
+  // a plugin that fails to load is a configuration error (exit code 2).
+  //
+  // Only add plugins you trust — a plugin runs with this process's privileges.
+  "plugins": [
+    "./inspect-plugins/runtime-policy.js"
+  ],
+
+  // ── maxFileBytes ────────────────────────────────────────────────────────
+  // Skip files larger than this many bytes (default 1048576 = 1 MiB).
+  "maxFileBytes": 1048576
+}
