@@ -6,6 +6,29 @@ All notable changes to Inspect are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and the project aims to follow
 semantic versioning once it reaches 1.0.
 
+## [0.3.2] — 2026-07-03
+
+### Added
+
+- **Reference semantic plugin — `runtime-policy` — proving the "rule host" thesis.**
+  A worked example (`inspect-plugins/runtime-policy.ts` + `docs/PLUGINS.md`) shows
+  how a semantic check that a static linter can't do lives in a plugin owned by
+  the runtime whose semantics it enforces. Its `runtime-over-autonomy` rule flags
+  a side-effecting tool granted autonomy above the safe ceiling with no gate —
+  and the ceiling is **computed from octopus-runtime's real `AutonomyLevel`
+  ordering** (`routeExecutes(routeFor(...))`), not a hard-coded copy that could
+  drift. Loaded through inspect's real plugin loader. The plugin source/fixtures
+  are repo-local (not in the npm tarball, and `octopus-runtime` is a
+  devDependency only); `docs/PLUGINS.md` ships as the authoring guide.
+
+### Fixed
+
+- **Reference plugin: a declared-but-empty gate no longer silences the rule.**
+  `hasExplicitGate` treated an empty string / `0` / empty object as a real
+  policy gate, so `{ autonomy: "autonomous", execute: "…", policy: "" }` slipped
+  through as a false negative. It now requires a meaningful gate value. Found by
+  adversarial review; regression-tested.
+
 ## [0.3.1] — 2026-07-03
 
 ### Added

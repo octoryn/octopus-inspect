@@ -1,0 +1,7 @@
+{
+  "// note": "A side-effecting deploy tool granted full autonomy with no gate.",
+  "name": "deployer",
+  "autonomy": "autonomous",
+  "execute": "deploy.sh",
+  "connector": "shell"
+}

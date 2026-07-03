@@ -1,6 +1,6 @@
 {
   "name": "octopus-inspect",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Catch governance holes before production does. A static governance linter for AI agent workspaces.",
   "license": "Apache-2.0",
   "author": "Ran Tao <ran@octopusos.ai>",
@@ -51,13 +51,14 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "build:plugins": "tsc -p inspect-plugins/tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "node --import tsx --test tests/*.test.ts",
     "coverage": "node --import tsx --test --experimental-test-coverage tests/*.test.ts",
     "example": "tsx examples/inspect-workspace.ts",
     "cli": "tsx src/cli.ts",
-    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\" \"examples/**/*.ts\"",
-    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\" \"examples/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\" \"examples/**/*.ts\" \"inspect-plugins/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\" \"examples/**/*.ts\" \"inspect-plugins/**/*.ts\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "npm run typecheck && npm run format:check && npm run lint && npm test && npm run build"
@@ -66,6 +67,7 @@
     "@eslint/js": "^9.17.0",
     "@types/node": "^22.10.0",
     "eslint": "^9.17.0",
+    "octopus-runtime": "^0.6.0",
     "prettier": "^3.4.2",
     "tsx": "^4.22.0",
     "typescript": "^5.7.0",

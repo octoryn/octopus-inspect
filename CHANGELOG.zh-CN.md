@@ -6,6 +6,26 @@ Inspect 的所有重要变更都记录于此。格式遵循
 [Keep a Changelog](https://keepachangelog.com/),项目在达到 1.0 后将遵循语义化
 版本 (semantic versioning)。
 
+## [0.3.2] — 2026-07-03
+
+### 新增
+
+- **参考语义插件 —— `runtime-policy` —— 证明"规则宿主"论点。** 一个可运行示例
+  (`inspect-plugins/runtime-policy.ts` + `docs/PLUGINS.md`)展示了静态 linter 做不到
+  的语义检查如何存在于一个由"其语义所属的运行时"拥有的插件中。其
+  `runtime-over-autonomy` 规则标记:被授予超过安全上限的自主度、且无任何门控的
+  副作用工具 —— 且该上限是**由 octopus-runtime 真实的 `AutonomyLevel` 顺序推导**
+  (`routeExecutes(routeFor(...))`),而非可能漂移的硬编码副本。通过 inspect 真实的
+  插件加载器加载。插件源码/夹具仅存在于仓库(不进 npm tarball,且 `octopus-runtime`
+  仅为 devDependency);`docs/PLUGINS.md` 作为编写指南随包发布。
+
+### 修复
+
+- **参考插件:声明了但为空的门控不再让规则静默。** `hasExplicitGate` 曾把空字符串
+  / `0` / 空对象当作真实的策略门控,导致
+  `{ autonomy: "autonomous", execute: "…", policy: "" }` 作为假阴性溜过。现要求门控值
+  必须有意义。由对抗性评审发现,已加回归测试。
+
 ## [0.3.1] — 2026-07-03
 
 ### 新增

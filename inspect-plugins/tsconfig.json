@@ -1,0 +1,16 @@
+{
+  // Build the reference plugin(s) to `inspect-plugins/dist/*.js` so the
+  // plain-node CLI can load them (tsx loads the .ts directly; production node
+  // needs the built .js). The dist output is git-ignored, produced by
+  // `npm run build:plugins`.
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./dist",
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "noEmit": false
+  },
+  "include": ["*.ts"]
+}

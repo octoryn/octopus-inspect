@@ -1,0 +1,8 @@
+{
+  "// note": "Autonomous, side-effecting, above the safe ceiling — with a gate key that is DECLARED BUT EMPTY. An empty gate lowers nothing, so the rule must still fire.",
+  "name": "deployer",
+  "autonomy": "autonomous",
+  "execute": "deploy.sh",
+  "connector": "shell",
+  "policy": ""
+}

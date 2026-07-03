@@ -1,0 +1,21 @@
+{
+  "// note": "Two safe shapes the plugin must stay silent on.",
+  "// case-1": "A side-effecting tool held at the safe ceiling (draft).",
+  "name": "notifier",
+  "autonomy": "draft",
+  "action": "send-email",
+  "connector": "email",
+
+  "// case-2": "Autonomous, but a read-only tool (no side-effect marker).",
+  "reader": {
+    "autonomy": "autonomous",
+    "reads": "metrics"
+  },
+
+  "// case-3": "Autonomous + side-effecting, but an explicit policy gate lowers it.",
+  "escalator": {
+    "autonomy": "autonomous",
+    "execute": "page-oncall.sh",
+    "requiresApproval": true
+  }
+}

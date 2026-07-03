@@ -4,3 +4,6 @@ coverage/
 *.log
 .DS_Store
 *.tgz
+
+# Built output of the reference plugin(s) (npm run build:plugins).
+inspect-plugins/dist/

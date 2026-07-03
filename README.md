@@ -315,6 +315,13 @@ configuration error rather than aborting the run. The `parseJsonc`, `walkJson`,
 `isJsonObject`, and `findKeyLine` helpers are exported to make structural plugin
 rules easy to author.
 
+A complete, working **reference plugin** lives at
+[`inspect-plugins/runtime-policy.ts`](inspect-plugins/runtime-policy.ts): a
+_semantic_ rule that derives its verdict from `octopus-runtime`'s real autonomy
+model rather than re-encoding it. See
+[`docs/PLUGINS.md`](docs/PLUGINS.md) for the walkthrough — this is the pattern to
+copy for a semantic check a static linter can't do alone.
+
 ## Design
 
 The authoritative architecture and contracts live in
