@@ -6,6 +6,25 @@ All notable changes to Inspect are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and the project aims to follow
 semantic versioning once it reaches 1.0.
 
+## [0.3.1] — 2026-07-03
+
+### Added
+
+- **Drop-in GitHub Action.** A composite `action.yml` (`octoryn/octopus-inspect@v0.3.1`)
+  runs the linter in CI and writes SARIF, so findings land in a repo's Security
+  tab in a few lines. Inputs `path` / `args` / `version` / `sarif-file` /
+  `fail-on-findings`; the copy-paste consumer workflow (pairing it with
+  `github/codeql-action/upload-sarif`) is in the README. A `self-scan.yml`
+  workflow dogfoods it against this repo.
+
+### Fixed
+
+- **Repo-root `.octoinspect.json` no longer breaks a whole-repo scan.** The
+  example config actively referenced a plugin (`./inspect-plugins/runtime-policy.js`)
+  that does not exist, so `octopus-inspect .` at the repo root failed with a
+  config error (exit 2) — the linter couldn't scan its own repository. The
+  dangling `plugins` entry is now commented out (kept as example syntax).
+
 ## [0.3.0] — 2026-07-03
 
 ### Added

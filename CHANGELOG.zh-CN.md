@@ -6,6 +6,23 @@ Inspect 的所有重要变更都记录于此。格式遵循
 [Keep a Changelog](https://keepachangelog.com/),项目在达到 1.0 后将遵循语义化
 版本 (semantic versioning)。
 
+## [0.3.1] — 2026-07-03
+
+### 新增
+
+- **开箱即用的 GitHub Action。** 组合式 `action.yml`(`octoryn/octopus-inspect@v0.3.1`)
+  在 CI 中运行 linter 并写出 SARIF,几行配置即可让发现出现在仓库的 Security 标签页。
+  输入 `path` / `args` / `version` / `sarif-file` / `fail-on-findings`;可直接复制的
+  消费方工作流(搭配 `github/codeql-action/upload-sarif`)见 README。另有
+  `self-scan.yml` 工作流对本仓库做狗粮测试。
+
+### 修复
+
+- **仓库根 `.octoinspect.json` 不再破坏全仓扫描。** 该示例配置曾主动引用一个不存在的
+  插件(`./inspect-plugins/runtime-policy.js`),导致在仓库根运行 `octopus-inspect .`
+  时以配置错误(退出码 2)失败 —— linter 竟无法扫描自己的仓库。现已将悬空的
+  `plugins` 条目注释掉(保留为示例语法)。
+
 ## [0.3.0] — 2026-07-03
 
 ### 新增

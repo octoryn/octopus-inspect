@@ -1,0 +1,63 @@
+name: "Octopus Inspect"
+description: "Catch governance holes before production does — run the octopus-inspect governance linter and emit SARIF for GitHub code scanning."
+author: "Octoryn"
+
+branding:
+  icon: "shield"
+  color: "blue"
+
+inputs:
+  path:
+    description: "Workspace directory or file to scan."
+    required: false
+    default: "."
+  args:
+    description: "Extra CLI arguments passed through to octopus-inspect (e.g. \"--threshold warning\")."
+    required: false
+    default: ""
+  version:
+    description: "npm version or spec of octopus-inspect to run (passed to npx as octopus-inspect@<version>)."
+    required: false
+    default: "0.3.0"
+  sarif-file:
+    description: "Path the SARIF report is written to."
+    required: false
+    default: "octopus-inspect.sarif"
+  fail-on-findings:
+    description: "When \"true\", a nonzero inspect exit (findings at/above threshold, or a config error) fails the step. When \"false\", the step always succeeds so the SARIF can still be uploaded."
+    required: false
+    default: "true"
+
+outputs:
+  sarif-file:
+    description: "Path to the SARIF report this action produced."
+    value: ${{ inputs.sarif-file }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run octopus-inspect (SARIF)
+      shell: bash
+      env:
+        INSPECT_VERSION: ${{ inputs.version }}
+        INSPECT_PATH: ${{ inputs.path }}
+        INSPECT_ARGS: ${{ inputs.args }}
+        INSPECT_SARIF_FILE: ${{ inputs.sarif-file }}
+        INSPECT_FAIL_ON_FINDINGS: ${{ inputs.fail-on-findings }}
+      run: |
+        set -o pipefail
+        # The CLI writes SARIF to stdout only (no file flag), so redirect it to
+        # the requested file. Capture the exit code without aborting the step:
+        # 0 clean, 1 findings at/above threshold, 2 configuration error.
+        code=0
+        npx --yes "octopus-inspect@${INSPECT_VERSION}" "${INSPECT_PATH}" \
+          --format sarif ${INSPECT_ARGS} > "${INSPECT_SARIF_FILE}" || code=$?
+
+        echo "octopus-inspect exited with code ${code}"
+        echo "SARIF written to ${INSPECT_SARIF_FILE}"
+
+        if [ "${INSPECT_FAIL_ON_FINDINGS}" = "true" ] && [ "${code}" -ne 0 ]; then
+          echo "::error::octopus-inspect reported findings or a configuration error (exit ${code})."
+          exit "${code}"
+        fi
+        exit 0

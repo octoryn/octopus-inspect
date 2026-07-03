@@ -1,0 +1,40 @@
+name: Self-scan
+
+# Dogfoods the Octopus Inspect action against this repo: scans a directory that
+# produces findings, then uploads the SARIF so results land in the Security tab.
+# fail-on-findings is false so the dogfood build reports without failing.
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  security-events: write # required to upload SARIF
+  contents: read
+
+jobs:
+  self-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Octopus Inspect
+        id: inspect
+        uses: ./
+        with:
+          # Scan the whole repo (path "."), exercising the repo-root
+          # .octoinspect.json. SARIF URIs are then repo-relative (e.g.
+          # tests/cli.test.ts), so findings anchor to real source in the
+          # Security tab. fail-on-findings is false so the dogfood build reports
+          # without failing on the committed test fixtures' intentional secrets.
+          path: .
+          sarif-file: octopus-inspect.sarif
+          fail-on-findings: "false"
+
+      - name: Upload SARIF to the Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ steps.inspect.outputs.sarif-file }}
+          category: octopus-inspect

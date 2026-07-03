@@ -123,6 +123,63 @@ findings land already labeled and grouped. To *also* fail the job on findings,
 run a second `octopus-inspect .` (pretty or json) with your chosen
 `--threshold`; the upload step above never fails the build on its own.
 
+## GitHub Action (drop-in)
+
+A composite action wraps the SARIF path above so any repo can adopt it in two
+steps: run Inspect, then upload the SARIF. The action runs the **published npm
+package** via `npx` — no build, no checkout of this repo. The SARIF upload is
+kept out of the action so **permissions stay in the caller's workflow** (the
+`security-events: write` grant belongs to you, not to a third-party action).
+
+```yaml
+# .github/workflows/inspect.yml
+name: inspect
+on: [push, pull_request]
+
+permissions:
+  security-events: write # required to upload SARIF
+  contents: read
+
+jobs:
+  governance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: inspect
+        uses: octoryn/octopus-inspect@v0.3.1
+        with:
+          path: .
+          fail-on-findings: "false" # report without failing the build
+      - uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ steps.inspect.outputs.sarif-file }}
+```
+
+Findings then render inline on the PR, in the **Security** tab, and as a check.
+Set `fail-on-findings: "true"` (the default) to also fail the step when Inspect
+exits nonzero — combine that with `args: "--threshold warning"` to choose what
+severity blocks the build.
+
+### Inputs
+
+| Input              | Default                 | Meaning |
+| ------------------ | ----------------------- | ------- |
+| `path`             | `.`                     | Workspace directory or file to scan. |
+| `args`             | `""`                    | Extra CLI arguments passed through to `octopus-inspect` (e.g. `--threshold warning`). |
+| `version`          | `0.3.0`                 | npm version/spec of `octopus-inspect` to run (`octopus-inspect@<version>`). |
+| `sarif-file`       | `octopus-inspect.sarif` | Path the SARIF report is written to. |
+| `fail-on-findings` | `true`                  | When `true`, a nonzero Inspect exit (findings at/above the threshold, or a config error) fails the step; when `false`, the step always succeeds so the SARIF can still be uploaded. |
+
+### Outputs
+
+| Output       | Meaning |
+| ------------ | ------- |
+| `sarif-file` | Path to the SARIF report the action produced — feed it to `upload-sarif`. |
+
+The CLI writes SARIF to **stdout**; the action redirects that to `sarif-file`
+and captures the exit code so `fail-on-findings` can gate the step
+independently of the upload.
+
 ## Programmatic API
 
 Everything the CLI does is available as a library:
