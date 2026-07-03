@@ -12,7 +12,7 @@
 > linter —— 同时也是一个**规则宿主 (rule host)**:一台遍历工作区、在其上运行治理
 > 规则、并产出**确定性 (deterministic) 发现项 (findings)** 的引擎。
 
-> **[Octopus Core](https://github.com/octoryn) 的一部分 —— 受治理 AI 的开源基础设施栈。** 每个仓库只做一件事，沿 agent 生命周期组合：[Scout](https://github.com/octoryn/octopus-scout) · [Observe](https://github.com/octoryn/octopus-observe) · [Experience](https://github.com/octoryn/octopus-experience) · [Blackboard](https://github.com/octoryn/octopus-blackboard) · [Runtime](https://github.com/octoryn/octopus-runtime) · [Replay](https://github.com/octoryn/octopus-replay) —— [Inspect](https://github.com/octoryn/octopus-inspect) 横贯每一环做治理。
+> **[Octopus Core](https://github.com/octoryn) 的一部分 —— 受治理 AI 的开源基础设施栈。** 每个仓库只做一件事，沿 agent 生命周期组合：[Scout](https://github.com/octoryn/octopus-scout) · [Observe](https://github.com/octoryn/octopus-observe) · [Experience](https://github.com/octoryn/octopus-experience) · [Blackboard](https://github.com/octoryn/octopus-blackboard) · [Runtime](https://github.com/octoryn/octopus-runtime) · [Replay](https://github.com/octoryn/octopus-replay) —— [Inspect](https://github.com/octoryn/octopus-inspect) 横贯每一环做治理。整个技术栈都构建在同一个根基元语上：**[Evidence](https://github.com/octoryn/octopus-evidence)** —— 规范化、防篡改的原子单元，也是 Octopus 其余部分赖以构建的根范畴 (root category)。
 >
 > **本仓库 —— Inspect · 治理（横贯每一环）：** 面向 AI 工作区的治理式 lint。
 
