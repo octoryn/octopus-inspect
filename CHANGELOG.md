@@ -6,6 +6,16 @@ All notable changes to Inspect are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and the project aims to follow
 semantic versioning once it reaches 1.0.
 
+## [0.2.0] — 2026-07-03
+
+### Added
+
+- **OWASP Top 10 for Agentic Applications (2026) mapping.** Every built-in rule
+  now declares the ASI category it addresses (a new optional `owasp` field on the
+  `Rule` contract). Exported as `OWASP_AGENTIC_2026` / `owaspLabel` and surfaced
+  in SARIF rule metadata (`properties.tags`, e.g. `OWASP-ASI-2026:ASI01`) so
+  findings map onto the shared security taxonomy for code scanning.
+
 ## [0.1.0] — 2026-07-03
 
 First public release.

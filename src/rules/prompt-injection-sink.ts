@@ -58,6 +58,7 @@ export const promptInjectionSink: Rule = {
   description:
     "Flags prompt/instruction templates that splice a user- or external-controlled variable directly into the prompt, where it could smuggle in adversarial instructions. Delimit, escape, or validate such input.",
   severity: "warning",
+  owasp: ["ASI01"],
   check(workspace: Workspace): RawFinding[] {
     const findings: RawFinding[] = [];
 

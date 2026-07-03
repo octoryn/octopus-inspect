@@ -7,6 +7,7 @@
  */
 import type { Finding, InspectReport, Rule, Severity } from "../types.js";
 import { builtinRules } from "../rules/index.js";
+import { owaspTitle } from "../owasp.js";
 
 const SARIF_LEVEL: Record<Severity, "error" | "warning" | "note"> = {
   error: "error",
@@ -34,6 +35,16 @@ export function formatSarif(report: InspectReport, options: SarifOptions = {}): 
       shortDescription: { text: r.title },
       fullDescription: { text: r.description },
       defaultConfiguration: { level: SARIF_LEVEL[r.severity] },
+      ...(r.owasp && r.owasp.length > 0
+        ? {
+            properties: {
+              // GitHub code scanning surfaces `tags`; the structured list keeps
+              // the id → title mapping machine-readable.
+              tags: r.owasp.map((id) => `OWASP-ASI-2026:${id}`),
+              "owasp-agentic-2026": r.owasp.map((id) => ({ id, title: owaspTitle(id) ?? id })),
+            },
+          }
+        : {}),
     }));
 
   const log = {

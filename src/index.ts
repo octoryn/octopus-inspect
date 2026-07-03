@@ -42,6 +42,10 @@ export {
   CONFIG_FILENAME,
 } from "./config.js";
 
+// OWASP Top 10 for Agentic Applications (2026) mapping.
+export { OWASP_AGENTIC_2026, owaspTitle, owaspLabel } from "./owasp.js";
+export type { OwaspAgenticId } from "./owasp.js";
+
 // Rules.
 export { builtinRules } from "./rules/index.js";
 export {

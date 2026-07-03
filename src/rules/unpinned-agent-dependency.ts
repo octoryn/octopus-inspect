@@ -31,6 +31,7 @@ export const unpinnedAgentDependency: Rule = {
   description:
     "Flags MCP/agent launch args using a mutable tag (`pkg@latest`) and manifest dependencies pinned to `latest`/`*`, where the executed code can change without review.",
   severity: "info",
+  owasp: ["ASI04"],
   check(workspace: Workspace): RawFinding[] {
     const findings: RawFinding[] = [];
     for (const { file, root, lines } of parsedJsonFiles(workspace)) {

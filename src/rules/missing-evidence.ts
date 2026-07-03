@@ -56,6 +56,7 @@ export const missingEvidence: Rule = {
   description:
     "Structurally flags a record that states a decision/claim/conclusion but carries no evidence, source, rationale, or citation field. Every asserted causal edge should carry provenance or stay a hypothesis.",
   severity: "warning",
+  owasp: ["ASI09"],
   check(workspace: Workspace): RawFinding[] {
     const findings: RawFinding[] = [];
     for (const { file, root, lines } of parsedJsonFiles(workspace)) {

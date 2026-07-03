@@ -6,6 +6,15 @@ Inspect 的所有重要变更都记录于此。格式遵循
 [Keep a Changelog](https://keepachangelog.com/),项目在达到 1.0 后将遵循语义化
 版本 (semantic versioning)。
 
+## [0.2.0] — 2026-07-03
+
+### 新增
+
+- **OWASP Top 10 for Agentic Applications (2026) 映射。** 每条内置规则现在都声明它
+  所对应的 ASI 类别(`Rule` 契约上新增的可选 `owasp` 字段)。以 `OWASP_AGENTIC_2026` /
+  `owaspLabel` 导出,并在 SARIF 规则元数据(`properties.tags`,如
+  `OWASP-ASI-2026:ASI01`)中输出,使 finding 落入代码扫描共享的安全词汇表。
+
 ## [0.1.0] — 2026-07-03
 
 首个公开发布。

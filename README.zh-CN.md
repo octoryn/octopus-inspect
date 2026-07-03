@@ -152,6 +152,22 @@ const sarif = formatSarif(report);        // SARIF 2.1.0 字符串
 边界把 "安全" 的定义留在唯一一处。`secret-in-source` 与 `prompt-injection-sink`
 另会扫描纯文本与提示词文件。
 
+## OWASP Agentic Top 10 映射
+
+每条内置规则都标注了它所对应的 [OWASP Top 10 for Agentic Applications (2026)](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) 类别,并在 SARIF 中输出(`properties.tags`,如 `OWASP-ASI-2026:ASI01`),让 finding 落入安全团队已在用的词汇表。
+
+| 规则 | OWASP Agentic 2026 |
+|---|---|
+| `secret-in-source` | ASI03 · Identity and Privilege Abuse |
+| `prompt-injection-sink` | ASI01 · Agent Goal Hijack |
+| `unsafe-autonomy` | ASI02 · Tool Misuse · ASI09 · Human-Agent Trust |
+| `overbroad-permission` | ASI03 · Identity and Privilege Abuse |
+| `missing-evidence` | ASI09 · Human-Agent Trust Exploitation |
+| `circular-workflow` | ASI08 · Cascading Failures |
+| `unpinned-agent-dependency` | ASI04 · Agentic Supply Chain Vulnerabilities |
+
+Inspect 的静态规则覆盖 Top 10 中"提交进工作区配置里可见"的那部分;运行时才产生的风险按设计不在 linter 范围内。类别表已导出(`OWASP_AGENTIC_2026`、`owaspLabel`)供插件使用。
+
 ## 配置 (Configuration)
 
 Inspect 会在根目录寻找 `.octoinspect.json`(JSONC —— 允许注释),或接受显式的

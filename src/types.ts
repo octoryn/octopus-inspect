@@ -10,6 +10,8 @@
  * what "safe" means.
  */
 
+import type { OwaspAgenticId } from "./owasp.js";
+
 /** Severity of a finding. `error` fails the run by default. */
 export type Severity = "error" | "warning" | "info";
 
@@ -87,6 +89,12 @@ export interface Rule {
   readonly description: string;
   /** Default severity, overridable per-workspace via config. */
   readonly severity: Severity;
+  /**
+   * OWASP Top 10 for Agentic Applications (2026) categories this rule addresses,
+   * e.g. `["ASI01"]`. Surfaced in SARIF so findings map onto the shared security
+   * taxonomy. Optional (plugins may omit it); every built-in rule sets it.
+   */
+  readonly owasp?: readonly OwaspAgenticId[];
   /** Inspect the workspace and return raw findings (no ruleId/severity). */
   check(workspace: Workspace): RawFinding[] | Promise<RawFinding[]>;
 }

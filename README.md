@@ -162,6 +162,27 @@ reason about a runtime's semantics — that boundary is what keeps "safe" define
 in one place. `secret-in-source` and `prompt-injection-sink` also scan plain
 text and prompt files.
 
+## OWASP Agentic Top 10 mapping
+
+Every built-in rule is tagged with the category it addresses in the
+[OWASP Top 10 for Agentic Applications (2026)](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) —
+surfaced in SARIF (`properties.tags`, e.g. `OWASP-ASI-2026:ASI01`) so findings
+slot into the taxonomy security teams already use.
+
+| Rule | OWASP Agentic 2026 |
+|---|---|
+| `secret-in-source` | ASI03 · Identity and Privilege Abuse |
+| `prompt-injection-sink` | ASI01 · Agent Goal Hijack |
+| `unsafe-autonomy` | ASI02 · Tool Misuse · ASI09 · Human-Agent Trust |
+| `overbroad-permission` | ASI03 · Identity and Privilege Abuse |
+| `missing-evidence` | ASI09 · Human-Agent Trust Exploitation |
+| `circular-workflow` | ASI08 · Cascading Failures |
+| `unpinned-agent-dependency` | ASI04 · Agentic Supply Chain Vulnerabilities |
+
+Inspect's static rules cover the subset of the Top 10 visible in committed
+workspace config; runtime-only risks are out of a linter's scope by design. The
+catalog is exported (`OWASP_AGENTIC_2026`, `owaspLabel`) for use in plugins.
+
 ## Configuration
 
 Inspect looks for `.octoinspect.json` (JSONC — comments allowed) at the root,

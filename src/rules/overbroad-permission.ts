@@ -23,6 +23,7 @@ export const overbroadPermission: Rule = {
   description:
     "Flags allowlists, tool lists, and scope grants set to a wildcard (`*`, `all`), which grant every capability instead of an explicit least-privilege set.",
   severity: "warning",
+  owasp: ["ASI03"],
   check(workspace: Workspace): RawFinding[] {
     const findings: RawFinding[] = [];
     for (const { file, root, lines } of parsedJsonFiles(workspace)) {

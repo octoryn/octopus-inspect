@@ -85,6 +85,7 @@ export const unsafeAutonomy: Rule = {
   description:
     "Structurally flags a config object that both marks itself auto-executing (autonomy/autoApprove/requireApproval:false) and has a side-effect marker (execute/command/tool/…) while declaring no approval or policy field.",
   severity: "error",
+  owasp: ["ASI02", "ASI09"],
   check(workspace: Workspace): RawFinding[] {
     const findings: RawFinding[] = [];
     for (const { file, root, lines } of parsedJsonFiles(workspace)) {

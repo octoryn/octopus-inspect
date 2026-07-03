@@ -62,6 +62,7 @@ export const secretInSource: Rule = {
   description:
     "Detects credentials (cloud keys, provider API keys, private keys, generic secret assignments) checked into files. Secrets belong in a secret manager or environment, never in the tree.",
   severity: "error",
+  owasp: ["ASI03"],
   check(workspace: Workspace): RawFinding[] {
     const findings: RawFinding[] = [];
     for (const file of workspace.files) {

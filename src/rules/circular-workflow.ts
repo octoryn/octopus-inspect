@@ -135,6 +135,7 @@ export const circularWorkflow: Rule = {
   description:
     "Detects cycles among workflow or agent steps (via next/then/dependsOn/requires/needs edges) parsed from JSON. A cyclic graph can never complete.",
   severity: "error",
+  owasp: ["ASI08"],
   check(workspace: Workspace): RawFinding[] {
     const findings: RawFinding[] = [];
     for (const { file, root, lines } of parsedJsonFiles(workspace)) {

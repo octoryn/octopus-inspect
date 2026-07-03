@@ -1,6 +1,6 @@
 {
   "name": "octopus-inspect",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Catch governance holes before production does. A static governance linter for AI agent workspaces.",
   "license": "Apache-2.0",
   "author": "Ran Tao <ran@octopusos.ai>",
