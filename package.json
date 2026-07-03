@@ -50,9 +50,10 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && npm run build:plugins",
     "build:plugins": "tsc -p inspect-plugins/tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pretest": "npm run build",
     "test": "node --import tsx --test tests/*.test.ts",
     "coverage": "node --import tsx --test --experimental-test-coverage tests/*.test.ts",
     "example": "tsx examples/inspect-workspace.ts",
