@@ -6,7 +6,7 @@
 [![Release](https://img.shields.io/github/v/release/octoryn/octopus-inspect?sort=semver)](https://github.com/octoryn/octopus-inspect/releases/latest)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D22-brightgreen.svg)](package.json)
-[![Zero runtime deps](https://img.shields.io/badge/runtime%20deps-0-success.svg)](package.json)
+[![Built on octopus-evidence](https://img.shields.io/badge/built%20on-octopus--evidence-7c9cff.svg)](https://github.com/octoryn/octopus-evidence)
 
 > Catch governance holes before production does. A static governance linter for
 > AI agent workspaces — and a **rule host**: an engine that walks a workspace,
@@ -45,8 +45,12 @@ rules; baking it in would fork the definition of "safe". Such checks arrive as
 single source of truth for what safe means. The built-ins only flag the
 *shape* that most often hides a hole.
 
-It has **zero runtime dependencies** and no dependency on any other Octopus
-package. The repo is fully usable on its own.
+It is **built on the first-party [octopus-evidence](https://github.com/octoryn/octopus-evidence)
+primitive** — its only runtime dependency, and the same Evidence atom the rest of
+the stack rides. That single dependency is what lets `--format evidence` turn each
+finding into a tamper-evident, independently-verifiable unit: your linter's findings
+are court-admissible without trusting the linter. The repo is otherwise
+self-contained and takes on no third-party dependencies.
 
 ## Install & build
 
@@ -68,12 +72,13 @@ and is **not** parsed yet (see [Boundaries](#boundaries) and
 ```bash
 octopus-inspect [path]                 # inspect a directory or file (default ".")
 octopus-inspect . --format sarif       # emit SARIF for CI code scanning
+octopus-inspect . --format evidence    # emit tamper-evident Evidence per finding
 octopus-inspect . --threshold warning  # fail the build on warnings too
 ```
 
 | Option           | Meaning                                                        |
 | ---------------- | ------------------------------------------------------------- |
-| `--format <f>`   | Output format: `pretty` \| `json` \| `sarif` (default `pretty`) |
+| `--format <f>`   | Output format: `pretty` \| `json` \| `sarif` \| `evidence` (default `pretty`) |
 | `--config <file>`| Config file to use (default `.octoinspect.json` at the root)  |
 | `--threshold <s>`| Severity that fails the run: `error` \| `warning` \| `info` (default `error`) |
 | `--no-color`     | Disable ANSI color in pretty output                           |

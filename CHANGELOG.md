@@ -6,6 +6,29 @@ All notable changes to Inspect are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and the project aims to follow
 semantic versioning once it reaches 1.0.
 
+## [0.3.0] — 2026-07-03
+
+### Added
+
+- **`--format evidence` reporter.** Every finding can now be emitted as an
+  independently-verifiable [`octopus-evidence`](https://github.com/octoryn/octopus-evidence)
+  `Evidence` — `kind = governance-finding:<ruleId>`, subject = the file/location,
+  content = the canonical finding detail (severity, message, line/col, OWASP
+  tags), provenance = `{ source: "octopus-inspect", method: "static-analysis" }`.
+  Anyone can recompute the hash and confirm what governance holes existed at a
+  commit **without trusting the linter** — the EU AI Act Art. 12/14 audit story.
+  New exports `reportEvidence` / `formatEvidence` / `findingToEvidence`; an
+  optional `integritySecret` seals the record under a keyed HMAC. The reporter
+  core is deterministic (injectable clock; never calls `Date.now()` at module
+  scope). Existing `pretty` / `json` / `sarif` output, rule ids, and finding
+  semantics are unchanged.
+
+### Changed
+
+- Now depends on the first-party `octopus-evidence@^0.2.0` — its **only** runtime
+  dependency (still zero third-party deps). README/DESIGN reframed to "built on
+  the first-party octopus-evidence primitive."
+
 ## [0.2.0] — 2026-07-03
 
 ### Added

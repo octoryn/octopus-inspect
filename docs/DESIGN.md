@@ -45,10 +45,12 @@ built-in rule set.
 
 ### 1.2 Independence
 
-Zero dependency on any other Octopus package — and, in fact, **zero runtime
-dependencies at all**. The package builds, tests, and runs end-to-end with
-nothing else present. The boundary is the `Rule` / `Plugin` contract, not any
-runtime SDK.
+**Zero third-party runtime dependencies.** Inspect's only runtime dependency is
+the first-party [`octopus-evidence`](https://github.com/octoryn/octopus-evidence)
+primitive (itself zero-dependency), which the `--format evidence` reporter uses
+to project each finding into a verifiable `Evidence` envelope. The package
+builds, tests, and runs end-to-end with nothing third-party present. The
+boundary is the `Rule` / `Plugin` contract, not any runtime SDK.
 
 ---
 

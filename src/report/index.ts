@@ -4,6 +4,15 @@ export type { PrettyOptions } from "./pretty.js";
 export { formatJson } from "./json.js";
 export { formatSarif } from "./sarif.js";
 export type { SarifOptions } from "./sarif.js";
+export {
+  formatEvidence,
+  reportEvidence,
+  serializeEvidence,
+  findingToEvidence,
+  EVIDENCE_SOURCE,
+  EVIDENCE_METHOD,
+} from "./evidence.js";
+export type { EvidenceOptions, EvidenceReportOptions, FindingContent } from "./evidence.js";
 
 /** Supported output formats. */
-export type ReportFormat = "pretty" | "json" | "sarif";
+export type ReportFormat = "pretty" | "json" | "sarif" | "evidence";

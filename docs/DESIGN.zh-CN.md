@@ -39,9 +39,11 @@ Inspect 不会、也绝不能:
 
 ### 1.2 独立性
 
-不依赖任何其他 Octopus 包 —— 事实上,**零运行时依赖**。本包在没有任何其他东西存在
-的情况下也能端到端地构建、测试与运行。边界是 `Rule` / `Plugin` 契约,而非任何运行时
-SDK。
+**零第三方运行时依赖。** Inspect 唯一的运行时依赖是第一方
+[`octopus-evidence`](https://github.com/octoryn/octopus-evidence) 原语(其本身零依赖),
+`--format evidence` 报告器用它将每条发现投射为可验证的 `Evidence` 信封。本包在没有任何
+第三方依赖存在的情况下也能端到端地构建、测试与运行。边界是 `Rule` / `Plugin` 契约,
+而非任何运行时 SDK。
 
 ---
 

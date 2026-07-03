@@ -4,6 +4,7 @@
  *
  *   octopus-inspect [path]                Inspect a directory (default ".")
  *   octopus-inspect . --format sarif      Emit SARIF for CI code scanning
+ *   octopus-inspect . --format evidence   Emit tamper-evident Evidence per finding
  *   octopus-inspect . --threshold warning Fail the build on warnings too
  *
  * Exit codes: 0 clean, 1 findings at/above the threshold, 2 configuration error.
@@ -14,8 +15,14 @@ import { loadConfig, normalizeConfig, CONFIG_FILENAME } from "./config.js";
 import { parseJsonc, isJsonObject } from "./jsonc.js";
 import { builtinRules } from "./rules/index.js";
 import { loadPlugins, mergeRules } from "./plugin.js";
-import { formatJson, formatPretty, formatSarif, type ReportFormat } from "./report/index.js";
-import type { InspectConfig, Severity } from "./types.js";
+import {
+  formatEvidence,
+  formatJson,
+  formatPretty,
+  formatSarif,
+  type ReportFormat,
+} from "./report/index.js";
+import type { InspectConfig, Rule, Severity } from "./types.js";
 
 const USAGE = `octopus-inspect — catch governance holes before production does
 
@@ -23,7 +30,7 @@ Usage:
   octopus-inspect [path]              Inspect a directory or file (default ".")
 
 Options:
-  --format <f>      Output format: pretty | json | sarif   (default pretty)
+  --format <f>      Output format: pretty | json | sarif | evidence   (default pretty)
   --config <file>   Config file to use (default ${CONFIG_FILENAME} at the root)
   --threshold <s>   Severity that fails the run: error | warning | info (default error)
   --no-color        Disable ANSI color in pretty output
@@ -79,8 +86,8 @@ function parseArgs(argv: readonly string[]): CliArgs {
       case "--format":
       case "-f": {
         const v = takeValue();
-        if (v !== "pretty" && v !== "json" && v !== "sarif") {
-          args.error = `invalid --format "${v ?? ""}" (want pretty|json|sarif)`;
+        if (v !== "pretty" && v !== "json" && v !== "sarif" && v !== "evidence") {
+          args.error = `invalid --format "${v ?? ""}" (want pretty|json|sarif|evidence)`;
         } else args.format = v;
         break;
       }
@@ -167,6 +174,21 @@ async function main(): Promise<number> {
     case "sarif":
       process.stdout.write(`${formatSarif(report, { rules, version: readVersion() })}\n`);
       break;
+    case "evidence": {
+      // Resolve OWASP tags from the (merged) rule set so they survive into each
+      // evidence's content. Stamp the run time once here — the reporter itself
+      // never calls Date.now(); the CLI is where the wall clock legitimately enters.
+      const owaspByRule = new Map<string, readonly string[]>(
+        rules.filter((r: Rule) => r.owasp && r.owasp.length > 0).map((r) => [r.id, r.owasp!]),
+      );
+      process.stdout.write(
+        `${formatEvidence(report, {
+          at: new Date().toISOString(),
+          owaspFor: (id) => owaspByRule.get(id),
+        })}\n`,
+      );
+      break;
+    }
     case "pretty":
       process.stdout.write(
         `${formatPretty(report, { color: args.color && process.stdout.isTTY === true })}\n`,

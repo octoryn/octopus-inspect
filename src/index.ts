@@ -7,7 +7,7 @@
  * checks that need a specific runtime's semantics arrive as plugins, so there is
  * a single source of truth for what "safe" means.
  *
- *   Workspace → Rules → Findings → Report (pretty / json / sarif)
+ *   Workspace → Rules → Findings → Report (pretty / json / sarif / evidence)
  */
 
 // Engine.
@@ -63,8 +63,25 @@ export { definePlugin, loadPlugins, mergeRules } from "./plugin.js";
 export type { LoadPluginsResult } from "./plugin.js";
 
 // Reporters.
-export { formatPretty, formatJson, formatSarif } from "./report/index.js";
-export type { PrettyOptions, SarifOptions, ReportFormat } from "./report/index.js";
+export {
+  formatPretty,
+  formatJson,
+  formatSarif,
+  formatEvidence,
+  reportEvidence,
+  serializeEvidence,
+  findingToEvidence,
+  EVIDENCE_SOURCE,
+  EVIDENCE_METHOD,
+} from "./report/index.js";
+export type {
+  PrettyOptions,
+  SarifOptions,
+  EvidenceOptions,
+  EvidenceReportOptions,
+  FindingContent,
+  ReportFormat,
+} from "./report/index.js";
 
 // JSON helpers (useful when authoring structural plugin rules).
 export { parseJsonc, walkJson, isJsonObject, findKeyLine } from "./jsonc.js";

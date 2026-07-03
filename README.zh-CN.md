@@ -6,7 +6,7 @@
 [![Release](https://img.shields.io/github/v/release/octoryn/octopus-inspect?sort=semver)](https://github.com/octoryn/octopus-inspect/releases/latest)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D22-brightgreen.svg)](package.json)
-[![Zero runtime deps](https://img.shields.io/badge/runtime%20deps-0-success.svg)](package.json)
+[![Built on octopus-evidence](https://img.shields.io/badge/built%20on-octopus--evidence-7c9cff.svg)](https://github.com/octoryn/octopus-evidence)
 
 > 在生产环境替你发现之前,先抓住治理漏洞。一个面向 AI agent 工作区的静态治理
 > linter —— 同时也是一个**规则宿主 (rule host)**:一台遍历工作区、在其上运行治理
@@ -40,8 +40,11 @@ Inspect 是**静态且自包含 (static and self-contained)** 的。它读取磁
 贡献,从而使 "安全" 只有唯一的真相来源 (single source of truth)。内置规则只标记那些
 最常藏着漏洞的*形态*。
 
-它具有**零运行时依赖 (zero runtime dependencies)**,且不依赖任何其他 Octopus 包。
-本仓库可完全独立使用。
+它**构建于第一方的 [octopus-evidence](https://github.com/octoryn/octopus-evidence)
+原语之上** —— 这是它唯一的运行时依赖,也是整个技术栈共用的那个 Evidence 原子。
+正是这一个依赖,让 `--format evidence` 能把每一条发现项变成防篡改 (tamper-evident)、
+可独立验证的单元:你的 linter 的发现项无需信任 linter 本身即可作为呈堂证据。
+除此之外本仓库自包含,不引入任何第三方依赖。
 
 ## 安装与构建 (Install & build)
 
@@ -62,12 +65,13 @@ npm run example     # 运行内置的演示工作区
 ```bash
 octopus-inspect [path]                 # 检查目录或文件(默认 ".")
 octopus-inspect . --format sarif       # 为 CI 代码扫描输出 SARIF
+octopus-inspect . --format evidence    # 为每条发现项输出防篡改 Evidence
 octopus-inspect . --threshold warning  # warning 也让构建失败
 ```
 
 | 选项             | 含义                                                          |
 | ---------------- | ------------------------------------------------------------- |
-| `--format <f>`   | 输出格式:`pretty` \| `json` \| `sarif`(默认 `pretty`)     |
+| `--format <f>`   | 输出格式:`pretty` \| `json` \| `sarif` \| `evidence`(默认 `pretty`) |
 | `--config <file>`| 使用的配置文件(默认根目录下的 `.octoinspect.json`)         |
 | `--threshold <s>`| 让本次运行失败的严重度:`error` \| `warning` \| `info`(默认 `error`) |
 | `--no-color`     | 关闭 pretty 输出中的 ANSI 颜色                                |
