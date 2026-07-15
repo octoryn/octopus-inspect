@@ -136,7 +136,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: inspect
-        uses: octoryn/octopus-inspect@v0.3.1
+        uses: octoryn/octopus-inspect@v0.3.2
         with:
           path: .
           fail-on-findings: "false" # 只报告,不让构建失败
@@ -155,7 +155,7 @@ jobs:
 | ------------------ | ----------------------- | ---- |
 | `path`             | `.`                     | 要扫描的工作区目录或文件。 |
 | `args`             | `""`                    | 透传给 `octopus-inspect` 的额外 CLI 参数(如 `--threshold warning`)。 |
-| `version`          | `0.3.0`                 | 要运行的 `octopus-inspect` 的 npm 版本/规格(`octopus-inspect@<version>`)。 |
+| `version`          | `0.3.2`                 | 要运行的 `octopus-inspect` 的 npm 版本/规格(`octopus-inspect@<version>`)。 |
 | `sarif-file`       | `octopus-inspect.sarif` | SARIF 报告写入的路径。 |
 | `fail-on-findings` | `true`                  | 为 `true` 时,Inspect 非零退出(达到阈值的发现项,或配置错误)会让步骤失败;为 `false` 时步骤总是成功,以便仍能上传 SARIF。 |
 

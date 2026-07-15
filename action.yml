@@ -18,7 +18,7 @@ inputs:
   version:
     description: "npm version or spec of octopus-inspect to run (passed to npx as octopus-inspect@<version>)."
     required: false
-    default: "0.3.0"
+    default: "0.3.2"
   sarif-file:
     description: "Path the SARIF report is written to."
     required: false
@@ -50,11 +50,24 @@ runs:
         # the requested file. Capture the exit code without aborting the step:
         # 0 clean, 1 findings at/above threshold, 2 configuration error.
         code=0
-        npx --yes "octopus-inspect@${INSPECT_VERSION}" "${INSPECT_PATH}" \
-          --format sarif ${INSPECT_ARGS} > "${INSPECT_SARIF_FILE}" || code=$?
+        if [ "${INSPECT_VERSION}" = "local" ]; then
+          npm ci
+          npm run build
+          node dist/cli.js "${INSPECT_PATH}" --format sarif ${INSPECT_ARGS} > "${INSPECT_SARIF_FILE}" || code=$?
+        else
+          npm exec --yes --package "octopus-inspect@${INSPECT_VERSION}" -- octopus-inspect "${INSPECT_PATH}" \
+            --format sarif ${INSPECT_ARGS} > "${INSPECT_SARIF_FILE}" || code=$?
+        fi
 
         echo "octopus-inspect exited with code ${code}"
         echo "SARIF written to ${INSPECT_SARIF_FILE}"
+
+        node -e "const fs=require('fs'); const p=process.argv[1]; const s=fs.readFileSync(p, 'utf8'); JSON.parse(s); if (!s.trim()) throw new Error('empty SARIF');" "${INSPECT_SARIF_FILE}"
+
+        if [ "${code}" -gt 1 ]; then
+          echo "::error::octopus-inspect failed before producing a usable SARIF report (exit ${code})."
+          exit "${code}"
+        fi
 
         if [ "${INSPECT_FAIL_ON_FINDINGS}" = "true" ] && [ "${code}" -ne 0 ]; then
           echo "::error::octopus-inspect reported findings or a configuration error (exit ${code})."
