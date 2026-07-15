@@ -30,6 +30,7 @@ jobs:
           # Security tab. fail-on-findings is false so the dogfood build reports
           # without failing on the committed test fixtures' intentional secrets.
           path: .
+          version: local
           sarif-file: octopus-inspect.sarif
           fail-on-findings: "false"
 
