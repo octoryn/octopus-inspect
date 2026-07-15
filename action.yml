@@ -18,7 +18,7 @@ inputs:
   version:
     description: "npm version or spec of octopus-inspect to run (passed to npx as octopus-inspect@<version>)."
     required: false
-    default: "0.3.0"
+    default: "0.3.2"
   sarif-file:
     description: "Path the SARIF report is written to."
     required: false

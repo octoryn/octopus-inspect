@@ -146,7 +146,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: inspect
-        uses: octoryn/octopus-inspect@v0.3.1
+        uses: octoryn/octopus-inspect@v0.3.2
         with:
           path: .
           fail-on-findings: "false" # report without failing the build
@@ -166,7 +166,7 @@ severity blocks the build.
 | ------------------ | ----------------------- | ------- |
 | `path`             | `.`                     | Workspace directory or file to scan. |
 | `args`             | `""`                    | Extra CLI arguments passed through to `octopus-inspect` (e.g. `--threshold warning`). |
-| `version`          | `0.3.0`                 | npm version/spec of `octopus-inspect` to run (`octopus-inspect@<version>`). |
+| `version`          | `0.3.2`                 | npm version/spec of `octopus-inspect` to run (`octopus-inspect@<version>`). |
 | `sarif-file`       | `octopus-inspect.sarif` | Path the SARIF report is written to. |
 | `fail-on-findings` | `true`                  | When `true`, a nonzero Inspect exit (findings at/above the threshold, or a config error) fails the step; when `false`, the step always succeeds so the SARIF can still be uploaded. |
 

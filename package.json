@@ -62,13 +62,15 @@
     "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\" \"examples/**/*.ts\" \"inspect-plugins/**/*.ts\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepublishOnly": "npm run typecheck && npm run format:check && npm run lint && npm test && npm run build"
+    "verify": "npm run typecheck && npm run format:check && npm run lint && npm test && npm run build",
+    "release:smoke": "npm pack --dry-run",
+    "prepublishOnly": "npm run verify && npm run release:smoke"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@types/node": "^22.10.0",
     "eslint": "^9.17.0",
-    "octopus-runtime": "^0.6.0",
+    "octopus-runtime": "^0.7.0",
     "prettier": "^3.4.2",
     "tsx": "^4.22.0",
     "typescript": "^5.7.0",
